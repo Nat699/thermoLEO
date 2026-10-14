@@ -1,0 +1,24 @@
+To: contact@kayhan.space
+Subject: Open-source thermospheric density probe — for Kayhan's drag forecasting
+
+Dear Kayhan Space team,
+
+I'm an independent researcher in orbital dynamics. I recently developed a method to estimate thermospheric density from public TLE data and released it as open-source software (thermoLEO).
+
+Key results:
+
+- The skewness of the LEO altitude distribution in the 823-925 km band collapsed from +0.12 (2014) to -1.85 (2025)
+- Lower tail decayed 6.6x faster than upper tail (-113 km vs -17 km over 11 years)
+- Multiple regression R2 = 0.986 for skewness as a function of F10.7 and tail quantiles
+
+Why this may matter to Kayhan: improved drag estimation from a no-cost data source could enhance your collision-avoidance accuracy and reentry prediction windows.
+
+What I propose: a short call to discuss potential integration into your platform.
+
+Attached: one-pager (PDF) and repository link.
+
+Best regards,
+Natanael A. Junior
+natanaelanjr@gmail.com
+https://github.com/Nat699/thermoLEO
+DOI: 10.5281/zenodo.23376365

@@ -1,0 +1,24 @@
+To: bill.adams@orionspace.com
+Subject: Independent validation source for Dragster / thermospheric density
+
+Dear Mr. Adams,
+
+I'm an independent researcher working on orbital dynamics. I recently open-sourced thermoLEO, a method to estimate thermospheric density in the 800-1000 km range from public TLE data.
+
+Key results:
+
+- Skewness collapse in the 823-925 km band from +0.12 to -1.85 over 2014-2025
+- Lower-tail decay 6.6x faster than upper-tail (-113 km vs -17 km)
+- R2 = 0.986 with F10.7 and quantile regression
+
+Why this may matter to Orion: this could serve as an independent validation channel for the Dragster density model, or as a low-cost complementary source for customers outside the HASDM ecosystem.
+
+What I propose: a technical call with your team to explore collaboration.
+
+Attached: one-pager (PDF) and repository link.
+
+Best regards,
+Natanael A. Junior
+natanaelanjr@gmail.com
+https://github.com/Nat699/thermoLEO
+DOI: 10.5281/zenodo.23376365

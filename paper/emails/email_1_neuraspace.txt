@@ -1,0 +1,26 @@
+To: thomas.eggenweiler@neuraspace.com
+Cc: info@neuraspace.com
+Subject: TLE-based thermospheric density probe — potential integration with Neuraspace STM
+
+Dear Mr. Eggenweiler,
+
+I'm an independent researcher working on orbital dynamics and space weather. I recently developed and open-sourced a method to estimate thermospheric density in the 800-1000 km range using only public TLE data — no dedicated instrumentation required.
+
+Key results:
+
+- Skewness of the altitude distribution in the 823-925 km band collapsed from +0.12 (2014) to -1.85 (2025), slope = -0.125/yr (p = 0.002)
+- Lower tail (q05) decayed 6.6x faster than upper tail (q95): -113 km vs -17 km
+- Correlation with the lower tail: r = -0.98 (bootstrap 95% CI [-0.999, -0.787]); multiple regression R2 = 0.986
+
+Why this may matter to Neuraspace: more accurate drag forecasting could reduce false collision alerts in your STM platform. Our method uses only public data, so it can be integrated without proprietary sensor infrastructure.
+
+What I propose: a 30-minute call to explore whether this could be integrated into your drag forecasting pipeline.
+
+Attached: one-pager (PDF) and link to the open-source repository.
+
+Best regards,
+Natanael A. Junior
+Independent Researcher
+natanaelanjr@gmail.com
+https://github.com/Nat699/thermoLEO
+DOI: 10.5281/zenodo.23376365

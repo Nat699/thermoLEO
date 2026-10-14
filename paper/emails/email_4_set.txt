@@ -1,0 +1,24 @@
+To: info@spacewx.com
+Subject: Independent TLE-derived density signal for JB2008 / HASDM cross-validation
+
+Dear SET team,
+
+I'm an independent researcher in orbital dynamics. I recently developed and open-sourced thermoLEO, a method that extracts a thermospheric density signal in the 800-1000 km range using only public TLE data.
+
+Key results:
+
+- Secular collapse of altitude skewness in the 823-925 km band (2014-2025)
+- Lower tail (q05) decayed -113 km while upper tail (q95) decayed only -17 km
+- Correlation skewness x lower tail: r = -0.98; regression R2 = 0.986
+
+Why this may matter to SET: the method could serve as an independent cross-validation channel for HASDM at 800-1000 km, where dedicated accelerometer data are limited.
+
+What I propose: a technical exchange with your team. I'd be glad to share the code, data, and full analysis.
+
+Attached: one-pager (PDF) and repository link.
+
+Best regards,
+Natanael A. Junior
+natanaelanjr@gmail.com
+https://github.com/Nat699/thermoLEO
+DOI: 10.5281/zenodo.23376365

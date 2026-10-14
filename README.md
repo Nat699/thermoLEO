@@ -1,5 +1,7 @@
 # thermoLEO
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23376365.svg)](https://doi.org/10.5281/zenodo.23376365)
+
 **A TLE-based thermospheric density probe.**
 
 thermoLEO estimates thermospheric density in the 800-1000 km range

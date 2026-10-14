@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+title: thermoLEO
+message: If you use this software, please cite it.
+authors:
+  - family-names: Sobrenome
+    given-names: Nome
+    affiliation: Independent Researcher
+version: 0.1.0
+date-released: 2026-01-01
+repository-code: https://github.com/SEU-USUARIO/thermoLEO
+license: MIT

@@ -8,4 +8,12 @@ data/*.txt
 !data/stations.csv
 .vscode/
 .idea/
-.DS_Store
+.DS_Store# Notebooks de teste
+Untitled*.ipynb
+# Dashboard v1 (obsoleto)
+dashboard/
+# TLE cache (regenerável)
+tle_latest.txt
+# Python
+*.pyc
+# Jupyter

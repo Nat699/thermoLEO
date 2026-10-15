@@ -1,0 +1,41 @@
+{
+  "title": "thermoLEO Tomography v1",
+  "description": "Multi-band altitude skewness of LEO satellites (2014-2025), computed from public TLE data for a fixed population of 4,108 Sun-synchronous satellites. 11 altitude bands from 550 to 1550 km.",
+  "version": "1.0.0",
+  "release_date": "2026-10-15",
+  "author": {
+    "name": "Natanael A. Junior",
+    "affiliation": "Independent Researcher",
+    "email": "natanaelanjr@gmail.com"
+  },
+  "license": "CC-BY-4.0",
+  "source": {
+    "type": "TLE",
+    "provider": "Hugging Face (juliensimon/space-track-tle-history)",
+    "filter": "Sun-synchronous (95 < i < 105), e < 0.05, 400-2000 km"
+  },
+  "columns": {
+    "year": "Calendar year (2014-2025)",
+    "band_km": "Center of altitude band (km)",
+    "band_lo_km": "Lower edge of band (km)",
+    "band_hi_km": "Upper edge of band (km)",
+    "n_satellites": "Number of satellites in the band that year",
+    "n_observations": "Number of TLE observations used",
+    "skewness": "Third standardized moment of altitude distribution",
+    "q10_km": "10th percentile of altitude (km)",
+    "q50_km": "Median altitude (km)",
+    "q90_km": "90th percentile of altitude (km)"
+  },
+  "method": "Per year and band, the skewness of the altitude distribution is computed. Satellites are assigned to bands based on their initial (2014) altitude, and tracked over time.",
+  "key_findings": {
+    "max_collapse_band_km": 1150,
+    "max_collapse_delta": -2.34,
+    "saturation_band_km": 550,
+    "saturation_delta": 0.88
+  },
+  "related": {
+    "github": "https://github.com/Nat699/thermoLEO",
+    "zenodo_software": "10.5281/zenodo.23376365",
+    "paper": "in preparation"
+  }
+}

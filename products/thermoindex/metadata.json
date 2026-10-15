@@ -1,0 +1,38 @@
+{
+  "title": "thermoLEO Index v1",
+  "description": "A single-number index (0-100) summarizing the state of the upper thermosphere (550-1550 km) derived from LEO satellite altitude distributions. Higher values indicate more anomalous conditions.",
+  "version": "1.0.2",
+  "release_date": "2026-10-15",
+  "author": "Natanael A. Junior",
+  "email": "natanaelanjr@gmail.com",
+  "license": "CC-BY-4.0",
+  "method": {
+    "I1": "Mean skewness across bands, INVERTED (negative = risk)",
+    "I2": "Skewness of 550 km band, direct (saturation = risk)",
+    "I3": "Fraction of band migration, direct",
+    "I4": "3-year rolling slope of I1, INVERTED"
+  },
+  "weights": {
+    "I1": 0.3,
+    "I2": 0.25,
+    "I3": 0.25,
+    "I4": 0.2
+  },
+  "classification": {
+    "calm": "TI < 15",
+    "normal": "15 <= TI < 35",
+    "active": "35 <= TI < 55",
+    "elevated": "55 <= TI < 75",
+    "extreme": "TI >= 75"
+  },
+  "range_observed": {
+    "min": 7.004450437995557,
+    "max": 91.13856559503823,
+    "year_min": 2014,
+    "year_max": 2025
+  },
+  "related": {
+    "dataset": "thermoLEO_tomography_v1",
+    "github": "https://github.com/Nat699/thermoLEO"
+  }
+}

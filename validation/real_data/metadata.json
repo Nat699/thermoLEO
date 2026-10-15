@@ -1,0 +1,52 @@
+{
+  "title": "thermoLEO — validation with real data",
+  "version": "0.2.0",
+  "release_date": "2026-10-15",
+  "author": "Natanael A. Junior",
+  "email": "natanaelanjr@gmail.com",
+  "sources": {
+    "tle": "/home/jovyan/data/tle_sso_year",
+    "swarm": "/home/jovyan/data/swarm_skew_B_C.parquet",
+    "orbital": "/home/jovyan/data/orbital_lon_wave.parquet",
+    "chaos7": "/home/jovyan/data/CHAOS-7.mat"
+  },
+  "validations": {
+    "teste1_da_dt": {
+      "n_satellites": 11092,
+      "da_dt_median": -3.5071,
+      "da_dt_range": [
+        -99.98,
+        3.25
+      ]
+    },
+    "teste2_corr_alt_dadt": {
+      "r": 0.926,
+      "p_interpretation": "altitude cresce com da/dt (menos negativo)"
+    },
+    "teste4_bootstrap_550km": {
+      "n_sats": 1576,
+      "median": -6.3121,
+      "ci95": [
+        -7.1766,
+        -5.7099
+      ]
+    },
+    "teste5_swarm_skewness": {
+      "r": -0.6726,
+      "p_raw": 0.000317,
+      "p_bonferroni_15": 0.004758,
+      "survives_bonferroni": true
+    },
+    "teste6_chaos7_vs_swarm": {
+      "r": 0.8053,
+      "p": 2e-06,
+      "interpretation": "modelo concorda com in-situ"
+    }
+  },
+  "key_findings": [
+    "B_C radial é o driver físico (Swarm + CHAOS-7 concordam)",
+    "Magnitude |B| não correlaciona (r=-0.21, n.s.)",
+    "Correlação altitude × da/dt = +0.93",
+    "Sobrevive a Bonferroni (×15)"
+  ]
+}

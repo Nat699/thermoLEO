@@ -1,0 +1,30 @@
+{
+  "title": "thermoLEO Regime Change Alert v1",
+  "description": "Detects anomalous regimes in the upper thermosphere using three independent signals from LEO satellite altitude distributions.",
+  "version": "1.0.0",
+  "release_date": "2026-10-15",
+  "author": "Natanael A. Junior",
+  "email": "natanaelanjr@gmail.com",
+  "license": "CC-BY-4.0",
+  "signals": {
+    "S1": "thermoLEO Index > 50",
+    "S2": "Band migration > 5% per year",
+    "S3": "550 km skewness slope < 0.05 (stalled saturation)"
+  },
+  "threshold": "Alert fires when >= 2 signals are active",
+  "levels": {
+    "none": "0 signals",
+    "watch": "1 signal",
+    "alert": "2 signals",
+    "critical": "3 signals"
+  },
+  "regime_years_detected": [
+    2024,
+    2025
+  ],
+  "related": {
+    "index": "thermoLEO_index",
+    "dataset": "thermoLEO_tomography_v1",
+    "github": "https://github.com/Nat699/thermoLEO"
+  }
+}

@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+title: thermoLEO Tomography Dataset v1
+message: If you use this dataset, please cite it as below.
+type: dataset
+authors:
+  - family-names: Junior
+    given-names: Natanael A.
+    affiliation: Independent Researcher
+    email: natanaelanjr@gmail.com
+version: 1.0.0
+date-released: 2026-10-15
+license: CC-BY-4.0
+repository-code: "https://github.com/Nat699/thermoLEO"
+abstract: |
+  Multi-band altitude skewness of LEO satellites (2014-2025), computed
+  from public TLE data for a fixed population of 4,108 Sun-synchronous
+  satellites across 11 altitude bands (550-1550 km).
+keywords:
+  - thermosphere
+  - density
+  - TLE
+  - satellite drag
+  - skewness
+  - geomagnetic

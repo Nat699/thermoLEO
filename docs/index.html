@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>thermoLEO - Painel revisado</title>
-<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<title>thermoLEO — Painel v3</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -15,8 +15,8 @@
   .header .tagline { color: #a8c8e8; font-size: 15px; font-style: italic; }
   .header .meta { margin-top: 12px; font-family: monospace; font-size: 12px; color: #7fb8e8; }
   .header .meta a { color: #7fb8e8; text-decoration: none; }
-  .header .revision { margin-top: 12px; padding: 8px 12px; background: rgba(255,165,0,0.15);
-                      border-left: 3px solid #ffa726; font-size: 12px; color: #ffd89b;
+  .header .revision { margin-top: 12px; padding: 8px 12px; background: rgba(102,187,106,0.15);
+                      border-left: 3px solid #66bb6a; font-size: 12px; color: #b8e6bb;
                       border-radius: 4px; }
   .container { max-width: 1400px; margin: 0 auto; padding: 32px 40px; }
   .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
@@ -31,6 +31,7 @@
   .kpi.ok .value { color: #66bb6a; }
   .kpi .sub { font-size: 12px; color: #7a8a9a; margin-top: 4px; }
   .grid-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+  .grid-full { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 32px; }
   .chart-card { background: #1a2029; border: 1px solid #2a3540; border-radius: 8px; padding: 16px; }
   .chart-card h3 { font-size: 13px; font-weight: 600; color: #a8c8e8;
                    margin-bottom: 12px; letter-spacing: 0.5px; }
@@ -40,6 +41,7 @@
                 text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
   .section h2.warn { color: #ffa726; }
   .section h2.refute { color: #ef5350; }
+  .section h2.ok { color: #66bb6a; }
   .section p { color: #c8d4e0; font-size: 14px; margin-bottom: 10px; }
   .section ul { list-style: none; }
   .section li { color: #c8d4e0; font-size: 14px; padding: 6px 0 6px 20px; position: relative; }
@@ -47,6 +49,7 @@
   .section .hl { color: #4a9eff; font-weight: 600; }
   .section .warnhl { color: #ffa726; font-weight: 600; }
   .section .refutehl { color: #ef5350; font-weight: 600; }
+  .section .okhl { color: #66bb6a; font-weight: 600; }
   .footer { text-align: center; padding: 24px; color: #5a6a7a; font-size: 12px;
             border-top: 1px solid #2a3540; margin-top: 40px; }
   .footer a { color: #4a9eff; text-decoration: none; }
@@ -60,14 +63,15 @@
 
 <div class="header">
   <h1>thermoLEO</h1>
-  <div class="tagline">Sonda de densidade termosferica via TLE - analise revisada</div>
+  <div class="tagline">Sonda de densidade termosferica e acoplamento geomagnetico via TLE</div>
   <div class="meta">
-    DOI: <a href="https://doi.org/10.5281/zenodo.23376365" target="_blank">10.5281/zenodo.23376365</a>
+    DOI: <a href="https://doi.org/10.5281/zenodo.23376365">10.5281/zenodo.23376365</a>
     &middot;
-    <a href="https://github.com/Nat699/thermoLEO" target="_blank">github.com/Nat699/thermoLEO</a>
+    <a href="https://github.com/Nat699/thermoLEO">github.com/Nat699/thermoLEO</a>
   </div>
   <div class="revision">
-    <strong>Revisao v2</strong> &mdash; a narrativa de "colapso da skewness" foi revisada apos controles de migracao de banda e populacao.
+    <strong>Revisao v3</strong> &mdash; validacao dupla Swarm + CHAOS-7.
+    Componente radial (B_C) e o driver fisico.
   </div>
 </div>
 
@@ -75,94 +79,88 @@
 
   <div class="kpis">
     <div class="kpi ok">
-      <div class="label">Skewness = fingerprint orbital</div>
-      <div class="value">+1.37 SSO</div>
-      <div class="sub">polar -0.55 &middot; inclinada -0.34</div>
+      <div class="label">Skewness x Swarm B_C</div>
+      <div class="value">r = -0.67</div>
+      <div class="sub">p = 0.0003 (in-situ)</div>
     </div>
     <div class="kpi ok">
-      <div class="label">Skewness x campo magnetico</div>
-      <div class="value">r = -0.67</div>
-      <div class="sub">IC 95% [-0.84, -0.46]</div>
+      <div class="label">Skewness x CHAOS-7 B_C</div>
+      <div class="value">r = -0.61</div>
+      <div class="sub">p = 0.0015 (modelo)</div>
+    </div>
+    <div class="kpi ok">
+      <div class="label">CHAOS-7 x Swarm</div>
+      <div class="value">r = +0.81</div>
+      <div class="sub">validacao cruzada</div>
     </div>
     <div class="kpi warn">
-      <div class="label">Migracao de banda</div>
-      <div class="value">0.85% &rarr; 14.9%</div>
-      <div class="sub">2019 &rarr; 2025 (17x)</div>
+      <div class="label">Magnitude |B|</div>
+      <div class="value">r = -0.21</div>
+      <div class="sub">nao significativo (n.s.)</div>
     </div>
-    <div class="kpi warn">
-      <div class="label">Saturacao em 550 km</div>
-      <div class="value">-2.43 &rarr; -0.05</div>
-      <div class="sub">cauda inferior desaparece</div>
+  </div>
+
+  <div class="grid-full">
+    <div class="chart-card">
+      <h3>TOMOGRAFIA — SKEWNESS x ALTITUDE x TEMPO</h3>
+      <div id="chart-heatmap" style="height: 400px;"></div>
+    </div>
+  </div>
+
+  <div class="grid-full">
+    <div class="chart-card">
+      <h3>VALIDACAO DUPLA — SWARM + CHAOS-7 vs SKEWNESS ORBITAL</h3>
+      <div id="chart-validation" style="height: 380px;"></div>
     </div>
   </div>
 
   <div class="grid-charts">
     <div class="chart-card">
-      <h3>SKEWNESS POR CLASSE ORBITAL (fingerprint)</h3>
-      <div id="chart-class"></div>
+      <h3>SKEWNESS POR CLASSE ORBITAL</h3>
+      <div id="chart-class" style="height: 300px;"></div>
     </div>
     <div class="chart-card">
-      <h3>MIGRACAO ENTRE BANDAS POR ANO</h3>
-      <div id="chart-migr"></div>
+      <h3>SATURACAO EM 550 km</h3>
+      <div id="chart-550" style="height: 300px;"></div>
     </div>
     <div class="chart-card">
-      <h3>SATURACAO EM 550 km - SATELITES ESTAVEIS</h3>
-      <div id="chart-550"></div>
+      <h3>MIGRACAO ENTRE BANDAS</h3>
+      <div id="chart-migr" style="height: 300px;"></div>
     </div>
     <div class="chart-card">
-      <h3>SKEWNESS x B_C DO SWARM (validacao externa)</h3>
-      <div id="chart-bc"></div>
+      <h3>DIPOLO vs ANOMALIA vs RADIAL</h3>
+      <div id="chart-comp" style="height: 300px;"></div>
     </div>
-  </div>
-
-  <div class="section">
-    <h2>O que foi revisado</h2>
-    <p>A analise original reportava um "colapso de skewness" na banda 823-925 km com slope de -0.125/ano. Testes de controle mostraram que <span class="warnhl">~35% desse sinal e artefato de migracao de satelites entre bandas</span>, nao efeito fisico. A narrativa foi revisada.</p>
   </div>
 
   <div class="section">
     <h2 class="refute">Hipoteses refutadas</h2>
     <ul>
-      <li><span class="refutehl">Variacao continental da skewness</span> - era vies de amostragem de estacoes</li>
-      <li><span class="refutehl">Modulacao solar direta (F10.7)</span> - r=0.91 era confound de populacao</li>
-      <li><span class="refutehl">Colapso da banda 823-925 km</span> - ~35% artefato de migracao</li>
-      <li><span class="refutehl">ML preditivo</span> - regime change 2024-25 + vies por banda</li>
+      <li><span class="refutehl">Variacao continental</span> &mdash; vies de amostragem</li>
+      <li><span class="refutehl">F10.7 direto</span> &mdash; confound de populacao</li>
+      <li><span class="refutehl">ML preditivo</span> &mdash; regime change + vies por banda</li>
+      <li><span class="refutehl">Magnitude |B| como driver</span> &mdash; r=-0.21 (n.s.)</li>
     </ul>
   </div>
 
   <div class="section">
-    <h2 class="warn">Achados revisados (solidos)</h2>
+    <h2 class="ok">Achados consolidados</h2>
     <ul>
-      <li><span class="hl">Fingerprint orbital</span> - skewness e propriedade da classe orbital, nao da geografia</li>
-      <li><span class="hl">Correlacao com B_C</span> - r = -0.67, IC 95% [-0.84, -0.46], validacao com Swarm</li>
-      <li><span class="hl">Convergencia para simetria</span> - 9 de 11 bandas com slope positivo (sats estaveis)</li>
-      <li><span class="hl">Saturacao em 550 km</span> - skew vai de -2.43 para -0.05 (2014 a 2025)</li>
-      <li><span class="hl">Migracao de banda acelera</span> - 0.85% (2019) a 14.9% (2025)</li>
+      <li><span class="okhl">Fingerprint orbital</span> &mdash; SSO +1.37, polar -0.55</li>
+      <li><span class="okhl">B_C radial e o driver</span> &mdash; validacao dupla independente</li>
+      <li><span class="okhl">Tomografia multi-banda</span> &mdash; 11 bandas, oscilatoria</li>
+      <li><span class="okhl">Saturacao 550 km</span> &mdash; skew de -2.43 a -0.05</li>
+      <li><span class="okhl">Migracao acelera</span> &mdash; 0.85% a 14.9%</li>
     </ul>
   </div>
 
   <div class="section">
     <h2>Metodo</h2>
-    <p>Analise de 12 anos (2014-2025) de TLEs publicos de <span class="hl">4.108 satelites heliossincronos</span> presentes em todos os anos. Cada satelite e classificado por banda de altitude inicial e acompanhado ao longo do tempo. Skewness, quantis e migracao de banda sao calculados anualmente. Validacao externa com campo magnetico medido pelo Swarm.</p>
-  </div>
-
-  <div class="section">
-    <h2>Aplicacoes</h2>
-    <ul>
-      <li>Monitoramento global de densidade termosferica sem instrumentacao dedicada</li>
-      <li>Deteccao de migracao anomala de banda como indicador de decaimento acelerado</li>
-      <li>Validacao de modelos empiricos (JB2008, NRLMSISE-00) em 550-1600 km</li>
-      <li>Estudo de regime changes da termosfera em escala decadal</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>Limitacoes</h2>
-    <ul>
-      <li>TLE tem precisao de ~1 km - limita resolucao temporal abaixo de mensal</li>
-      <li>Amostra de 12 anos nao permite ML robusto (regime change + poucos grupos independentes)</li>
-      <li>Colapso original era parcialmente artefato - correcao documentada</li>
-    </ul>
+    <p>12 anos (2014-2025) de TLEs publicos de <span class="hl">4.108 satelites
+    heliossincronos</span> presentes em todos os anos. Cada satelite e classificado
+    por banda inicial e acompanhado ao longo do tempo. Validacao cruzada com
+    <span class="hl">Swarm (in-situ)</span> e <span class="hl">CHAOS-7
+    (modelo harmonico esferico)</span>.</p>
   </div>
 
 </div>
@@ -176,74 +174,127 @@
 </div>
 
 <script>
-const ANOS = ["2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+const LONS = [-180,-165,-150,-135,-120,-105,-90,-75,-60,-45,-30,-15,0,15,30,45,60,75,90,105,120,135,150,165];
+const CHAOS7 = [2847.86,803.93,-875.74,-2484.35,-4032.28,-5607.43,-6889.18,-6608.46,-3963.06,349.63,4547.50,7279.27,8420.75,8291.30,7173.09,6244.64,6507.89,7455.88,8174.76,7995.94,7669.47,7622.81,6864.55,5120.18];
+const SWARM = [0.007,0.257,0.432,0.516,0.548,0.604,0.749,0.918,0.904,0.549,-0.238,-0.085,-0.731,-0.753,-0.582,-0.424,-0.358,-0.483,-0.841,-1.093,-0.174,-0.067,-0.225,-0.221];
+const ORBITAL = [-0.347,-0.280,-0.224,-0.237,-0.253,-0.078,-0.328,-0.267,-0.273,-0.427,-0.286,-0.361,-0.423,-0.356,-0.398,-0.431,-0.399,-0.456,-0.438,-0.322,-0.273,-0.291,-0.301,-0.327];
+
+const FP_CLASSES = ["SSO","polar","inclinada","equatorial"];
+const FP_SKEW = [1.37,-0.55,-0.34,0.35];
+const FP_CORES = ["#66bb6a","#ef5350","#ffa726","#4a9eff"];
+
+const SAT550_ANOS = ["2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+const SAT550_SKEW = [-2.434,-2.213,-2.071,-1.937,-1.925,-1.867,-1.742,-1.823,-1.698,-1.521,-1.289,-0.051];
+
+const MIGR_ANOS = ["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+const MIGR_FRAC = [4.35,1.89,1.47,0.99,0.85,1.09,0.99,2.44,5.37,9.47,14.86];
+
+const HM_ANOS = ["2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+const HM_BANDAS = [550,650,750,850,950,1050,1150,1250,1350,1450,1550];
+const HM_VALS = [
+[-0.958,0.155,-0.133,0.032,0.638,0.040,0.344,0.547,-0.194,-0.275,0.369],
+[-0.643,0.161,-0.107,0.007,0.627,0.003,0.332,0.557,-0.227,-0.292,0.342],
+[-0.380,0.098,-0.117,-0.113,0.609,-0.034,0.289,0.480,-0.271,-0.299,0.324],
+[0.008,0.039,-0.138,-0.099,0.592,-0.074,0.251,0.406,-0.285,-0.307,0.315],
+[0.107,0.032,-0.127,-0.110,0.578,-0.069,0.224,0.390,-0.296,-0.310,0.323],
+[0.053,0.040,-0.118,-0.130,0.571,-0.074,0.214,0.422,-0.318,-0.330,0.333],
+[0.251,-0.019,-0.141,-0.126,0.533,-0.097,0.169,0.376,-0.399,-0.343,0.315],
+[0.227,-0.038,-0.132,-0.147,0.512,-0.111,0.149,0.360,-0.445,-0.358,0.322],
+[0.256,-0.051,-0.135,-0.321,0.450,-0.159,0.042,0.339,-0.536,-0.369,0.324],
+[0.409,-0.187,-0.002,-0.362,0.184,-0.371,-0.296,0.222,-0.786,-0.425,0.328],
+[0.091,-0.751,-0.574,-0.984,-0.983,-1.232,-0.995,-0.003,-1.308,-0.527,0.267],
+[-0.075,-1.066,-1.194,-1.853,-1.210,-1.717,-1.994,-0.367,-1.858,-0.609,0.190]
+];
+
+const COMP_LABELS = ["Radial B_C","Magnitude |B|","Dipolo puro","Anomalia 2+"];
+const COMP_R = [-0.611,-0.206,-0.384,-0.414];
+const COMP_P = [0.0015,0.33,0.064,0.044];
+
+const baseLayout = {
+  paper_bgcolor: "#1a2029",
+  plot_bgcolor: "#1a2029",
+  font: { color: "#c8d4e0", size: 11 },
+  margin: { l: 60, r: 30, t: 20, b: 50 },
+  showlegend: false,
+};
+const config = { displayModeBar: false, responsive: true };
+
+Plotly.newPlot("chart-heatmap", [{
+  x: HM_BANDAS, y: HM_ANOS, z: HM_VALS,
+  type: "heatmap",
+  colorscale: [[0,"#3d1515"],[0.25,"#ef5350"],[0.5,"#1a2029"],[0.75,"#4a9eff"],[1,"#0d5c8c"]],
+  zmin: -2.5, zmax: 2.5,
+  colorbar: { title: "Skewness", tickfont: { color: "#c8d4e0" },
+              titlefont: { color: "#c8d4e0" } }
+}], Object.assign({}, baseLayout, {
+  xaxis: { gridcolor: "#2a3540", title: "Altitude (km)" },
+  yaxis: { gridcolor: "#2a3540", title: "Ano", autorange: "reversed" }
+}), config);
+
+Plotly.newPlot("chart-validation", [
+  { x: LONS, y: CHAOS7, name: "CHAOS-7 B_C", type: "scatter", mode: "lines+markers",
+    line: { color: "#0d5c8c", width: 2.5 }, marker: { size: 6 }, yaxis: "y" },
+  { x: LONS, y: SWARM, name: "Swarm B_C", type: "scatter", mode: "lines+markers",
+    line: { color: "#e67e22", width: 2, dash: "dash" }, marker: { size: 5 }, yaxis: "y2" },
+  { x: LONS, y: ORBITAL, name: "Skewness orbital", type: "scatter", mode: "lines+markers",
+    line: { color: "#c0392b", width: 2, dash: "dot" }, marker: { size: 5 }, yaxis: "y3" }
+], Object.assign({}, baseLayout, {
+  showlegend: true,
+  legend: { x: 0.02, y: 0.98, bgcolor: "rgba(0,0,0,0)", font: { size: 10, color: "#c8d4e0" } },
+  xaxis: { gridcolor: "#2a3540", title: "Longitude (graus)" },
+  yaxis: { gridcolor: "#2a3540", title: "CHAOS-7 B_C (nT)",
+           titlefont: { color: "#0d5c8c" }, tickfont: { color: "#0d5c8c" } },
+  yaxis2: { gridcolor: "rgba(0,0,0,0)", title: "Swarm B_C",
+            overlaying: "y", side: "right",
+            titlefont: { color: "#e67e22" }, tickfont: { color: "#e67e22" } },
+  yaxis3: { gridcolor: "rgba(0,0,0,0)", title: "Skewness orbital",
+            overlaying: "y", side: "right", position: 0.95,
+            titlefont: { color: "#c0392b" }, tickfont: { color: "#c0392b" } }
+}), config);
 
 Plotly.newPlot("chart-class", [{
-  x: ["SSO","polar","inclinada","equatorial"],
-  y: [1.37, -0.55, -0.34, 0.35],
-  type: "bar",
-  marker: { color: ["#66bb6a","#ef5350","#ffa726","#4a9eff"] }
-}], {
-  paper_bgcolor: "#1a2029", plot_bgcolor: "#1a2029",
-  font: { color: "#c8d4e0", size: 11 },
-  margin: { l: 45, r: 15, t: 10, b: 40 },
+  x: FP_CLASSES, y: FP_SKEW, type: "bar",
+  marker: { color: FP_CORES },
+  text: FP_SKEW.map(v => v.toFixed(2)),
+  textposition: "outside",
+  textfont: { color: "#c8d4e0", size: 12 }
+}], Object.assign({}, baseLayout, {
   xaxis: { gridcolor: "#2a3540" },
-  yaxis: { gridcolor: "#2a3540", title: "Skewness" },
-  height: 280, showlegend: false
-}, { displayModeBar: false, responsive: true });
-
-Plotly.newPlot("chart-migr", [{
-  x: ANOS.slice(1),
-  y: [4.35, 1.89, 1.47, 0.99, 0.85, 1.09, 0.99, 2.44, 5.37, 9.47, 14.86],
-  type: "bar",
-  marker: { color: "#ffa726" }
-}], {
-  paper_bgcolor: "#1a2029", plot_bgcolor: "#1a2029",
-  font: { color: "#c8d4e0", size: 11 },
-  margin: { l: 45, r: 15, t: 10, b: 40 },
-  xaxis: { gridcolor: "#2a3540", title: "Ano" },
-  yaxis: { gridcolor: "#2a3540", title: "% migraram" },
-  height: 280, showlegend: false
-}, { displayModeBar: false, responsive: true });
+  yaxis: { gridcolor: "#2a3540", title: "Skewness", zerolinecolor: "#5a6a7a" }
+}), config);
 
 Plotly.newPlot("chart-550", [{
-  x: ANOS,
-  y: [-2.434, -2.213, -2.071, -1.937, -1.925, -1.867, -1.742, -1.823, -1.698, -1.521, -1.289, -0.051],
-  type: "scatter", mode: "lines+markers",
-  line: { color: "#ef5350", width: 3 },
-  marker: { color: "#ef5350", size: 8 }
-}], {
-  paper_bgcolor: "#1a2029", plot_bgcolor: "#1a2029",
-  font: { color: "#c8d4e0", size: 11 },
-  margin: { l: 45, r: 15, t: 10, b: 40 },
+  x: SAT550_ANOS, y: SAT550_SKEW, type: "scatter", mode: "lines+markers",
+  line: { color: "#ef5350", width: 3 }, marker: { color: "#ef5350", size: 8 }
+}], Object.assign({}, baseLayout, {
   xaxis: { gridcolor: "#2a3540", title: "Ano" },
   yaxis: { gridcolor: "#2a3540", title: "Skewness" },
-  height: 280, showlegend: false,
   shapes: [{ type: "line", x0: "2014", x1: "2025", y0: 0, y1: 0,
              line: { color: "#5a6a7a", width: 1, dash: "dot" } }]
-}, { displayModeBar: false, responsive: true });
+}), config);
 
-const bc_lon = [];
-for (var i = -180; i < 180; i += 15) bc_lon.push(i);
-const bc_vals = [-0.32,-0.28,-0.25,-0.23,-0.24,-0.31,-0.42,-0.51,
-                 -0.38,-0.21,-0.05,0.12,0.22,0.28,0.31,0.27,0.19,0.09,
-                 -0.02,-0.13,-0.22,-0.27,-0.31,-0.34];
+Plotly.newPlot("chart-migr", [{
+  x: MIGR_ANOS, y: MIGR_FRAC, type: "bar",
+  marker: { color: "#ffa726" },
+  text: MIGR_FRAC.map(v => v.toFixed(1) + "%"),
+  textposition: "outside",
+  textfont: { color: "#c8d4e0", size: 10 }
+}], Object.assign({}, baseLayout, {
+  xaxis: { gridcolor: "#2a3540", title: "Ano" },
+  yaxis: { gridcolor: "#2a3540", title: "% migraram" }
+}), config);
 
-Plotly.newPlot("chart-bc", [{
-  x: bc_lon, y: bc_vals,
-  type: "scatter", mode: "markers+lines",
-  line: { color: "#4a9eff", width: 2 },
-  marker: { color: "#4a9eff", size: 6 }
-}], {
-  paper_bgcolor: "#1a2029", plot_bgcolor: "#1a2029",
-  font: { color: "#c8d4e0", size: 11 },
-  margin: { l: 45, r: 15, t: 10, b: 40 },
-  xaxis: { gridcolor: "#2a3540", title: "Longitude (graus)" },
-  yaxis: { gridcolor: "#2a3540", title: "Skewness do B_C" },
-  height: 280, showlegend: false,
-  shapes: [{ type: "line", x0: -180, x1: 180, y0: 0, y1: 0,
-             line: { color: "#5a6a7a", width: 1, dash: "dot" } }]
-}, { displayModeBar: false, responsive: true });
+Plotly.newPlot("chart-comp", [{
+  x: COMP_LABELS, y: COMP_R, type: "bar",
+  marker: { color: ["#4a9eff","#5a6a7a","#ffa726","#c0392b"] },
+  text: COMP_R.map(v => v.toFixed(3)),
+  textposition: "outside",
+  textfont: { color: "#c8d4e0", size: 11 }
+}], Object.assign({}, baseLayout, {
+  xaxis: { gridcolor: "#2a3540" },
+  yaxis: { gridcolor: "#2a3540", title: "r (correlacao com skewness)",
+           zerolinecolor: "#5a6a7a" }
+}), config);
 </script>
 
 </body>

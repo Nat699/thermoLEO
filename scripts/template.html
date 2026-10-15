@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>thermoLEO — Painel de densidade termosférica</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+         background: #0f1419; color: #e8eef5; line-height: 1.5; }
+  .header { background: linear-gradient(135deg, #0d5c8c 0%, #1a3a5c 100%);
+            padding: 32px 40px; border-bottom: 3px solid #4a9eff; }
+  .header h1 { font-size: 32px; font-weight: 700; margin-bottom: 4px; }
+  .header .tagline { color: #a8c8e8; font-size: 15px; font-style: italic; }
+  .header .meta { margin-top: 12px; font-family: monospace; font-size: 12px; color: #7fb8e8; }
+  .header .meta a { color: #7fb8e8; text-decoration: none; }
+  .header .meta a:hover { text-decoration: underline; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 32px 40px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .kpi { background: #1a2029; border: 1px solid #2a3540; border-radius: 8px;
+         padding: 20px; border-left: 4px solid #4a9eff; }
+  .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+                color: #7a8a9a; margin-bottom: 8px; }
+  .kpi .value { font-size: 26px; font-weight: 700; color: #4a9eff; }
+  .kpi .sub { font-size: 12px; color: #7a8a9a; margin-top: 4px; }
+  .grid-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+  .chart-card { background: #1a2029; border: 1px solid #2a3540; border-radius: 8px; padding: 16px; }
+  .chart-card h3 { font-size: 13px; font-weight: 600; color: #a8c8e8;
+                   margin-bottom: 12px; letter-spacing: 0.5px; }
+  .section { background: #1a2029; border: 1px solid #2a3540; border-radius: 8px;
+             padding: 24px 28px; margin-bottom: 20px; }
+  .section h2 { font-size: 15px; color: #4a9eff; margin-bottom: 12px;
+                text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+  .section p { color: #c8d4e0; font-size: 14px; margin-bottom: 10px; }
+  .section ul { list-style: none; }
+  .section li { color: #c8d4e0; font-size: 14px; padding: 6px 0 6px 20px; position: relative; }
+  .section li::before { content: "\25B8"; color: #4a9eff; position: absolute; left: 0; }
+  .section .hl { color: #4a9eff; font-weight: 600; }
+  .footer { text-align: center; padding: 24px; color: #5a6a7a; font-size: 12px;
+            border-top: 1px solid #2a3540; margin-top: 40px; }
+  .footer a { color: #4a9eff; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+  @media (max-width: 900px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .grid-charts { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>thermoLEO</h1>
+  <div class="tagline">Uma sonda de densidade termosférica baseada em dados TLE</div>
+  <div class="meta">
+    DOI: <a href="https://doi.org/10.5281/zenodo.23376365" target="_blank">10.5281/zenodo.23376365</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/Nat699/thermoLEO" target="_blank">github.com/Nat699/thermoLEO</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">Colapso da assimetria</div>
+      <div class="value">+0,12 &rarr; &minus;1,85</div>
+      <div class="sub">2014 &rarr; 2025 (11 anos)</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Decaimento diferencial</div>
+      <div class="value">6,6&times;</div>
+      <div class="sub">cauda inferior vs superior</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Assimetria &times; cauda inferior</div>
+      <div class="value">r = &minus;0,98</div>
+      <div class="sub">IC 95% bootstrap [&minus;0,999, &minus;0,787]</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Regress&atilde;o m&uacute;ltipla</div>
+      <div class="value">R&sup2; = 0,986</div>
+      <div class="sub">assimetria ~ F10,7 + q10 + q50</div>
+    </div>
+  </div>
+
+  <div class="grid-charts">
+    <div class="chart-card">
+      <h3>COLAPSO DA ASSIMETRIA DE ALTITUDE (823&ndash;925 km)</h3>
+      <div id="chart-skew"></div>
+    </div>
+    <div class="chart-card">
+      <h3>DECAIMENTO DIFERENCIAL &mdash; QUANTIS</h3>
+      <div id="chart-quant"></div>
+    </div>
+    <div class="chart-card">
+      <h3>ASSIMETRIA vs CAUDA INFERIOR</h3>
+      <div id="chart-lower"></div>
+    </div>
+    <div class="chart-card">
+      <h3>ASSIMETRIA E CICLO SOLAR 25 (F10,7)</h3>
+      <div id="chart-f107"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Problema</h2>
+    <p>A termosfera superior (800&ndash;1000 km) &eacute; pouco amostrada por miss&otilde;es dedicadas. CHAMP, GRACE e Swarm operam abaixo de 500 km. Modelos emp&iacute;ricos dependem de assimila&ccedil;&atilde;o esparsa e carecem de valida&ccedil;&atilde;o independente nessas altitudes.</p>
+  </div>
+
+  <div class="section">
+    <h2>M&eacute;todo</h2>
+    <p>Extra&iacute;mos um sinal de densidade da <span class="hl">cauda inferior da distribui&ccedil;&atilde;o de altitudes dos sat&eacute;lites LEO</span>, usando apenas dados TLE p&uacute;blicos. Uma popula&ccedil;&atilde;o fixa de 4.108 sat&eacute;lites helioss&iacute;ncronos (1.369 na banda de 823&ndash;925 km) &eacute; analisada anualmente de 2014 a 2025.</p>
+  </div>
+
+  <div class="section">
+    <h2>Resultados-Chave</h2>
+    <ul>
+      <li>Assimetria caiu de <span class="hl">+0,12 (2014)</span> para <span class="hl">&minus;1,85 (2025)</span>, inclina&ccedil;&atilde;o = &minus;0,125/ano (p = 0,002)</li>
+      <li>Cauda inferior (q05) decaiu <span class="hl">6,6&times; mais r&aacute;pido</span> que a superior (q95): &minus;113 km vs &minus;17 km</li>
+      <li>Correla&ccedil;&atilde;o assimetria &times; cauda inferior: <span class="hl">r = &minus;0,98</span> (IC 95% bootstrap [&minus;0,999, &minus;0,787])</li>
+      <li>Regress&atilde;o m&uacute;ltipla (assimetria ~ F10,7 + q10 + q50): <span class="hl">R&sup2; = 0,986</span></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Aplica&ccedil;&otilde;es</h2>
+    <ul>
+      <li>Monitoramento global de densidade termosf&eacute;rica sem instrumenta&ccedil;&atilde;o dedicada</li>
+      <li>Previs&atilde;o de arrasto orbital e reentrada (6&ndash;12 meses de anteced&ecirc;ncia)</li>
+      <li>Nowcasting de clima espacial a partir de arquivos TLE p&uacute;blicos (desde 1957)</li>
+      <li>Valida&ccedil;&atilde;o independente de JB2008 / NRLMSISE-00 em 800&ndash;1000 km</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="footer">
+  Contato: <a href="mailto:natanaelanjr@gmail.com">natanaelanjr@gmail.com</a>
+  &nbsp;&middot;&nbsp;
+  <a href="https://github.com/Nat699/thermoLEO">GitHub</a>
+  &nbsp;&middot;&nbsp;
+  Licen&ccedil;a: MIT
+</div>
+
+<script>
+const ANOS = ["2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+const SKEW = [0.119, 0.103, -0.113, -0.081, -0.101, -0.102, -0.088, -0.135, -0.394, -0.439, -1.013, -1.852];
+const Q10  = [831.37, 827.01, 825.75, 824.60, 823.67, 822.66, 822.00, 820.61, 816.95, 805.65, 781.63, 750.85];
+const Q50  = [868.44, 864.56, 863.33, 862.56, 861.39, 860.32, 859.94, 858.49, 857.04, 852.13, 845.57, 838.99];
+const Q90  = [911.69, 907.66, 905.72, 904.91, 904.02, 903.50, 902.13, 901.33, 900.52, 898.01, 894.32, 891.10];
+const F107 = [146.5, 118.0, 88.9, 77.5, 69.9, 69.7, 73.8, 81.8, 124.6, 159.9, 190.7, 154.6];
+
+const layout = {
+  paper_bgcolor: "#1a2029", plot_bgcolor: "#1a2029",
+  font: { color: "#c8d4e0", size: 11 },
+  margin: { l: 50, r: 20, t: 10, b: 40 },
+  xaxis: { gridcolor: "#2a3540", zerolinecolor: "#3a4550" },
+  yaxis: { gridcolor: "#2a3540", zerolinecolor: "#3a4550" },
+  showlegend: false, height: 280
+};
+const config = { displayModeBar: false, responsive: true };
+
+Plotly.newPlot("chart-skew", [{
+  x: ANOS, y: SKEW, type: "scatter", mode: "lines+markers",
+  line: { color: "#4a9eff", width: 3 },
+  marker: { color: "#4a9eff", size: 8 }
+}], Object.assign({}, layout, {
+  yaxis: Object.assign({}, layout.yaxis, { title: "Assimetria" }),
+  xaxis: Object.assign({}, layout.xaxis, { title: "Ano" }),
+  shapes: [{ type: "line", x0: "2014", x1: "2025", y0: 0, y1: 0,
+             line: { color: "#5a6a7a", width: 1, dash: "dot" } }]
+}), config);
+
+Plotly.newPlot("chart-quant", [
+  { x: ANOS, y: Q10, type: "scatter", mode: "lines+markers",
+    name: "q10 (inferior)", line: { color: "#ef5350", width: 2 }, marker: { size: 6 } },
+  { x: ANOS, y: Q50, type: "scatter", mode: "lines+markers",
+    name: "q50 (mediana)", line: { color: "#4a9eff", width: 2 }, marker: { size: 6 } },
+  { x: ANOS, y: Q90, type: "scatter", mode: "lines+markers",
+    name: "q90 (superior)", line: { color: "#66bb6a", width: 2 }, marker: { size: 6 } }
+], Object.assign({}, layout, {
+  showlegend: true,
+  legend: { x: 0, y: 1, bgcolor: "rgba(0,0,0,0)", font: { size: 10 } },
+  yaxis: Object.assign({}, layout.yaxis, { title: "Altitude (km)" }),
+  xaxis: Object.assign({}, layout.xaxis, { title: "Ano" })
+}), config);
+
+const LOWER = Q50.map(function(v, i) { return v - Q10[i]; });
+Plotly.newPlot("chart-lower", [{
+  x: LOWER, y: SKEW, type: "scatter", mode: "markers",
+  marker: { color: "#4a9eff", size: 12, line: { color: "#7fb8e8", width: 1 } }
+}], Object.assign({}, layout, {
+  xaxis: Object.assign({}, layout.xaxis, { title: "Cauda inferior (q50 - q10), km" }),
+  yaxis: Object.assign({}, layout.yaxis, { title: "Assimetria" })
+}), config);
+
+Plotly.newPlot("chart-f107", [
+  { x: ANOS, y: SKEW, type: "scatter", mode: "lines+markers",
+    name: "Assimetria", line: { color: "#4a9eff", width: 3 },
+    marker: { size: 8 }, yaxis: "y" },
+  { x: ANOS, y: F107, type: "scatter", mode: "lines+markers",
+    name: "F10,7", line: { color: "#ffa726", width: 2, dash: "dash" },
+    marker: { size: 6 }, yaxis: "y2" }
+], Object.assign({}, layout, {
+  showlegend: true,
+  legend: { x: 0, y: 1, bgcolor: "rgba(0,0,0,0)", font: { size: 10 } },
+  xaxis: Object.assign({}, layout.xaxis, { title: "Ano" }),
+  yaxis: Object.assign({}, layout.yaxis, {
+    title: "Assimetria",
+    titlefont: { color: "#4a9eff" },
+    tickfont: { color: "#4a9eff" }
+  }),
+  yaxis2: {
+    title: "F10,7 (sfu)", overlaying: "y", side: "right",
+    titlefont: { color: "#ffa726" }, tickfont: { color: "#ffa726" },
+    gridcolor: "rgba(0,0,0,0)"
+  }
+}), config);
+</script>
+
+</body>
+</html>

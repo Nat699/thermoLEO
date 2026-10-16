@@ -1,11 +1,16 @@
 cff-version: 1.2.0
 title: thermoLEO
 message: If you use this software, please cite it.
+type: software
 authors:
-  - family-names: Sobrenome
-    given-names: Nome
+  - family-names: Nascimento Junior
+    given-names: Natanael A.
     affiliation: Independent Researcher
-version: 0.1.0
-date-released: 2026-01-01
-repository-code: https://github.com/SEU-USUARIO/thermoLEO
+    email: natanaelanjr@gmail.com
+    orcid: https://orcid.org/0009-0009-4656-8957
+version: 2.0.0
+date-released: 2026-10-15
+repository-code: https://github.com/Nat699/thermoLEO
+url: https://github.com/Nat699/thermoLEO
 license: MIT
+doi: 10.5281/zenodo.23376365

@@ -1,74 +1,34 @@
 # thermoLEO
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23376365.svg)](https://doi.org/10.5281/zenodo.23376365)
-
-**A TLE-based probe of thermospheric density and geomagnetic coupling.**
-
-thermoLEO analyzes the altitude distribution of LEO satellites using
-only public TLE data. The skewness of this distribution serves as a
-sensitive proxy for thermospheric density and correlates with the
-radial component of the geomagnetic field.
+A TLE-based probe of thermospheric density and geomagnetic coupling.
 
 ## Key findings
 
-- **Orbital-class fingerprint:** skewness is a property of the orbital
-  class (SSO +1.37, polar −0.55, inclined −0.34, equatorial +0.35)
+### Bimodal orbital skewness collapse (Q1 vs Q4)
+The altitude distribution of 4,124 Sun-synchronous satellites (2014-2025) shows a bimodal collapse:
+- Q1 (fast decayers, 264 sats): skewness collapses from +2.36 (2014) to -4.43 (2025)
+- Q4 (slow decayers, 264 sats): skewness remains stable (+0.52 to +0.60)
+- Output B (sub-bands 823-850, 850-880, 880-925): slopes -0.6088 / -0.4053 / -0.0361 (reproduced exactly)
 
-- **Geomagnetic coupling:** skewness correlates with the RADIAL
-  component of the geomagnetic field (B_C), validated independently:
-  - Swarm in-situ: r = −0.67 (p = 0.0003)
-  - CHAOS-7 model: r = −0.61 (p = 0.0015)
-  - Cross-validation: r = +0.81
+### 3 skews coupled in Q1
+- r(alt, v) = -0.9999
+- r(alt, rho) = -0.9784
+- r(v, rho) = +0.9792
 
-- **Magnitude does NOT correlate:** |B| gives r = −0.21 (n.s.),
-  isolating the vertical magnetosphere-ionosphere-thermosphere
-  coupling as the physical driver
+### Driver is the radial component of the geomagnetic field (B_C)
+- Swarm in-situ: r = -0.67 (p = 0.0003)
+- CHAOS-7: r = -0.61 (p = 0.0015)
+- Magnitude |B| does not correlate: r = -0.21 (n.s.)
 
-- **Multi-band tomography:** 11 altitude bands (550–1550 km) show
-  an oscillating collapse pattern, with the strongest signal at
-  1150 km (−2.34) and an inversion at 550 km (+0.88)
+## What was refuted
 
-- **Lower-tail saturation at 550 km:** skewness goes from −2.43
-  (2014) to −0.05 (2025)
-
-- **Band migration accelerates:** 0.85% (2019) → 14.9% (2025)
-
-## Method
-
-12 years (2014–2025) of public TLE data are analyzed for a fixed
-population of 4,108 Sun-synchronous satellites. Each satellite is
-assigned to its initial altitude band and tracked over time.
-Skewness, quantiles, and band migration are computed annually.
-External validation uses Swarm in-situ measurements and the
-CHAOS-7 geomagnetic field model.
+The linear skewness collapse (+0.12 to -1.85, slope -0.125/yr) does not reproduce.
+The correct finding is the bimodal collapse: 25% of satellites (Q1) drive the entire
+skewness trend, while 75% remain stable.
 
 ## Installation
 
     pip install git+https://github.com/Nat699/thermoLEO.git
 
-## Quick start
-
-    from thermoleo import ThermoSensor
-
-    sensor = ThermoSensor(band=(823, 925))
-    sensor.load_tle("data/tle_sso.parquet")
-    result = sensor.fit()
-    print(result[["year", "skew", "q10", "q50", "q90"]])
-
-## Data
-
-This repository does not include TLE data. To download:
-
-- Space-Track: https://www.space-track.org
-- Hugging Face: https://huggingface.co/datasets/juliensimon/space-track-tle-history
-
-Place files in `data/` as `tle_YYYY.parquet`.
-
-## Revision
-
-See [REVISION_NOTES.md](REVISION_NOTES.md) for the full history
-of hypotheses tested, refuted, and consolidated.
-
 ## License
-
 MIT
